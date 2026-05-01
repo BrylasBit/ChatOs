@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ChatOS</title>
+<style>
+body{background:#0f1115;color:white;font-family:Arial;padding:20px}
+textarea{width:100%;height:100px}
+button{padding:10px;margin-top:10px}
+.box{margin-top:10px;border:1px solid #333;padding:10px}
+</style>
+</head>
+<body>
+
+<h2>🧠 ChatOS</h2>
+
+<textarea id="input"></textarea>
+<button onclick="run()">EXECUTE</button>
+
+<div class="box" id="memory"></div>
+<div class="box" id="clusters"></div>
+
+<script>
+let data = JSON.parse(localStorage.getItem("chatos")||"[]");
+
+function words(t){
+ return t.toLowerCase().split(/\\s+/).filter(x=>x.length>3);
+}
+
+function sim(a,b){
+ let A=words(a),B=words(b);
+ return A.filter(x=>B.includes(x)).length;
+}
+
+function cluster(){
+ let groups=[];
+ data.forEach(x=>{
+  let placed=false;
+  for(let g of groups){
+   if(sim(x,g[0])>0){g.push(x);placed=true;break;}
+  }
+  if(!placed) groups.push([x]);
+ });
+ return groups;
+}
+
+function render(){
+ document.getElementById("memory").innerText =
+ "MEMORY:\\n"+data.join("\\n");
+
+ let g=cluster();
+ document.getElementById("clusters").innerText =
+ g.map((c,i)=>"Cluster "+(i+1)+": "+c.join(", ")).join("\\n\\n");
+}
+
+function run(){
+ let input=document.getElementById("input").value;
+ data.push(input);
+ localStorage.setItem("chatos",JSON.stringify(data));
+ render();
+}
+
+render();
+</script>
+
+</body>
+</html>
