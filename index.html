@@ -40,16 +40,15 @@ function cluster(){
 
   for(let g of groups){
 
-    // 🔥 SPRAWDZAJ CAŁĄ GRUPĘ, nie tylko pierwszy element
-    let match = g.some(item => sim(x, item) > 0);
+  let score = g.reduce((acc, item) => acc + sim(x, item), 0);
 
-    if(match){
-      g.push(x);
-      placed=true;
-      break;
-    }
+  if(score > 0){
+    g.push(x);
+    placed = true;
+    break;
   }
 
+}
   if(!placed) groups.push([x]);
  });
 
