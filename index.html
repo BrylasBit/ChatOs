@@ -34,14 +34,27 @@ function sim(a,b){
 
 function cluster(){
  let groups=[];
+
  data.forEach(x=>{
   let placed=false;
+
   for(let g of groups){
-   if(sim(x,g[0])>0){g.push(x);placed=true;break;}
+
+    // 🔥 SPRAWDZAJ CAŁĄ GRUPĘ, nie tylko pierwszy element
+    let match = g.some(item => sim(x, item) > 0);
+
+    if(match){
+      g.push(x);
+      placed=true;
+      break;
+    }
   }
+
   if(!placed) groups.push([x]);
  });
+
  return groups;
+}
 }
 
 function render(){
