@@ -40,7 +40,8 @@ function cluster(){
 
   for(let g of groups){
 
-  let score = g.reduce((acc, item) => acc + sim(x, item), 0);
+  // 🔥 tutaj liczysz score dla całej grupy
+   let score = g.reduce((acc, item) => acc + sim(x, item), 0);
 
   if(score > 0){
     g.push(x);
